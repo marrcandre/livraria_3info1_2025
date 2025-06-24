@@ -17,6 +17,7 @@ class AutorAdmin(admin.ModelAdmin):
     ordering = ('nome', 'email')
     list_per_page = 10
 
+
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
     list_display = ('descricao',)
@@ -24,6 +25,7 @@ class CategoriaAdmin(admin.ModelAdmin):
     list_filter = ('descricao',)
     ordering = ('descricao',)
     list_per_page = 10
+
 
 @admin.register(Editora)
 class EditoraAdmin(admin.ModelAdmin):
@@ -33,6 +35,7 @@ class EditoraAdmin(admin.ModelAdmin):
     ordering = ('nome', 'email', 'cidade')
     list_per_page = 10
 
+
 @admin.register(Livro)
 class LivroAdmin(admin.ModelAdmin):
     list_display = ('categoria', 'titulo', 'editora', )
@@ -40,6 +43,7 @@ class LivroAdmin(admin.ModelAdmin):
     search_fields = ('titulo', 'editora__nome', 'categoria__descricao')
     list_filter = ('editora', 'categoria')
     list_per_page = 10
+
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
