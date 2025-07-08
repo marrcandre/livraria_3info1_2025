@@ -7,6 +7,7 @@ class ItensCompraSerializer(ModelSerializer):
     class Meta:
         model = ItensCompra
         fields = '__all__'
+        depth = 2
 
 
 class CompraSerializer(ModelSerializer):
@@ -17,3 +18,4 @@ class CompraSerializer(ModelSerializer):
     class Meta:
         model = Compra
         fields = ('id', 'usuario', 'status', 'itens')
+
