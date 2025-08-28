@@ -1,4 +1,10 @@
-from rest_framework.serializers import CharField, ModelSerializer, SerializerMethodField
+from rest_framework.serializers import (
+    CharField,
+    CurrentUserDefault,  # novo
+    HiddenField,  # novo
+    ModelSerializer,
+    SerializerMethodField,
+)
 
 from core.models import Compra, ItensCompra
 
@@ -10,6 +16,7 @@ class ItensCompraCreateUpdateSerializer(ModelSerializer):
 
 
 class CompraCreateUpdateSerializer(ModelSerializer):
+    usuario = HiddenField(default=CurrentUserDefault())
     itens = ItensCompraCreateUpdateSerializer(many=True)
 
     class Meta:
@@ -33,24 +40,15 @@ class CompraCreateUpdateSerializer(ModelSerializer):
         return super().update(compra, validated_data)
 
 
-class ItensCompraSerializer(ModelSerializer):
-    total = SerializerMethodField()
-
-    def get_total(self, instance):
-        return instance.livro.preco * instance.quantidade
-
-    class Meta:
-        model = ItensCompra
-        fields = ('quantidade', 'total', 'livro')
-        depth = 2
-
-
 class ItensCompraListSerializer(ModelSerializer):
     livro = CharField(source='livro.titulo', read_only=True)
 
     class Meta:
         model = ItensCompra
-        fields = ('livro', 'quantidade',)
+        fields = (
+            'livro',
+            'quantidade',
+        )
         # depth = 1
 
 
@@ -61,6 +59,18 @@ class CompraListSerializer(ModelSerializer):
     class Meta:
         model = Compra
         fields = ('id', 'usuario', 'itens')
+
+
+class ItensCompraSerializer(ModelSerializer):
+    total = SerializerMethodField()
+
+    def get_total(self, instance):
+        return instance.livro.preco * instance.quantidade
+
+    class Meta:
+        model = ItensCompra
+        fields = ('quantidade', 'total', 'livro')
+        depth = 2
 
 
 class CompraSerializer(ModelSerializer):
