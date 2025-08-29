@@ -22,7 +22,12 @@ class ItensCompraCreateUpdateSerializer(ModelSerializer):
 
     def validate(self, item):
         if item['quantidade'] > item['livro'].quantidade:
-            raise ValidationError('Quantidade de itens maior do que a quantidade em estoque.')
+            raise ValidationError(
+                (
+                    f'Você tentou comprar {item["quantidade"]} unidades mas só temos '
+                    f'{item["livro"].quantidade} unidades em estoque.'
+                )
+            )
         return item
 
 
