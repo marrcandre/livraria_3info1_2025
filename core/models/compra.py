@@ -16,7 +16,7 @@ class Compra(models.Model):
 
     @property
     def total(self):
-        return sum(item.livro.preco * item.quantidade for item in self.itens.all())
+        return sum(item.preco * item.quantidade for item in self.itens.all())
 
     def __str__(self):
         return f'({self.id}) {self.usuario} {self.status}'
@@ -26,6 +26,7 @@ class ItensCompra(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE, related_name='itens')
     livro = models.ForeignKey(Livro, on_delete=models.PROTECT, related_name='+')
     quantidade = models.IntegerField(default=1)
+    preco = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 
     def __str__(self):
         return f'({self.id}) {self.compra} {self.livro} {self.quantidade}'
